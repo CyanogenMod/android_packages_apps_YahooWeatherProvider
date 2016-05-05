@@ -31,7 +31,6 @@ public class ConverterUtils {
     public static ArrayList<WeatherInfo.DayForecast> convertForecastsToDayForecasts(List<Forecast> forecasts) {
         ArrayList<WeatherInfo.DayForecast> ret = new ArrayList<>();
         for (Forecast forecast : forecasts) {
-            System.out.println("Forecast " + forecast);
             WeatherInfo.DayForecast dayForecast = new WeatherInfo.DayForecast.Builder(
                     Integer.parseInt(forecast.getCode()))
                     .setHigh(Double.parseDouble(forecast.getHigh()))

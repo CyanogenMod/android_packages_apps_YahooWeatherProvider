@@ -28,7 +28,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class YahooWeatherServiceManager {
     private final static String TAG = "YahooServiceManager";
-    private final static boolean DEBUG = true;//Log.isLoggable(TAG, Log.VERBOSE);
+    private final static boolean DEBUG = Log.isLoggable(TAG, Log.VERBOSE);
 
     private final YahooServiceInterface mYahooServiceInterface;
 
