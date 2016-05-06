@@ -248,7 +248,8 @@ public class YahooWeatherProviderService extends WeatherProviderService
                 WeatherContract.WeatherColumns.TempUnit.FAHRENHEIT);
 
         // Set current weather condition code
-        weatherInfoBuilder.setWeatherCondition(Integer.parseInt(condition.getCode()));
+        weatherInfoBuilder.setWeatherCondition(
+                ConverterUtils.offset(Integer.parseInt(condition.getCode())));
 
         // Set humidity
         weatherInfoBuilder.setHumidity(Double.parseDouble(atmosphere.getHumidity()));
@@ -262,7 +263,8 @@ public class YahooWeatherProviderService extends WeatherProviderService
         weatherInfoBuilder.setTodaysHigh(Double.parseDouble(forecasts[0].getHigh()));
         weatherInfoBuilder.setTodaysLow(Double.parseDouble(forecasts[0].getHigh()));
 
-        ArrayList<WeatherInfo.DayForecast> forecastList = ConverterUtils.convertForecastsToDayForecasts(
+        ArrayList<WeatherInfo.DayForecast> forecastList =
+                ConverterUtils.convertForecastsToDayForecasts(
                 Arrays.asList(forecasts));
         // Remove today
         forecastList.remove(0);

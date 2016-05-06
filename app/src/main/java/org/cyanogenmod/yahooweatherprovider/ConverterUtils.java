@@ -27,16 +27,22 @@ import org.cyanogenmod.yahooweatherprovider.yahoo.response.Postal;
 import java.util.ArrayList;
 import java.util.List;
 
+import cyanogenmod.providers.WeatherContract;
 import cyanogenmod.weather.WeatherInfo;
 import cyanogenmod.weather.WeatherLocation;
+
+import static cyanogenmod.providers.WeatherContract.WeatherColumns.WeatherCode.ISOLATED_THUNDERSHOWERS;
+import static cyanogenmod.providers.WeatherContract.WeatherColumns.WeatherCode.NOT_AVAILABLE;
+import static cyanogenmod.providers.WeatherContract.WeatherColumns.WeatherCode.SCATTERED_SNOW_SHOWERS;
+import static cyanogenmod.providers.WeatherContract.WeatherColumns.WeatherCode.SCATTERED_THUNDERSTORMS;
 
 public class ConverterUtils {
 
     public static ArrayList<WeatherInfo.DayForecast> convertForecastsToDayForecasts(List<Forecast> forecasts) {
         ArrayList<WeatherInfo.DayForecast> ret = new ArrayList<>();
         for (Forecast forecast : forecasts) {
-            WeatherInfo.DayForecast dayForecast = new WeatherInfo.DayForecast.Builder(
-                    Integer.parseInt(forecast.getCode()))
+            WeatherInfo.DayForecast dayForecast = new WeatherInfo.DayForecast.Builder(offset(
+                    Integer.parseInt(forecast.getCode())))
                     .setHigh(Double.parseDouble(forecast.getHigh()))
                     .setLow(Double.parseDouble(forecast.getLow()))
                     .build();
@@ -95,5 +101,19 @@ public class ConverterUtils {
             }
         }
         return ret;
+    }
+
+    public static int offset(int conditionCode) {
+        if (conditionCode <= WeatherContract.WeatherColumns.WeatherCode.SHOWERS) {
+            return conditionCode;
+        } else if (conditionCode <= SCATTERED_THUNDERSTORMS) {
+            return conditionCode - 1;
+        } else if (conditionCode <= SCATTERED_SNOW_SHOWERS) {
+            return conditionCode - 2;
+        } else if (conditionCode <= ISOLATED_THUNDERSHOWERS) {
+            return conditionCode - 3;
+        } else {
+            return NOT_AVAILABLE;
+        }
     }
 }
