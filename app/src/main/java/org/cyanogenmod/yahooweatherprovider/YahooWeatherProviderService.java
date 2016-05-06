@@ -261,7 +261,7 @@ public class YahooWeatherProviderService extends WeatherProviderService
 
         // Set high and low for today from the simple forecast days
         weatherInfoBuilder.setTodaysHigh(Double.parseDouble(forecasts[0].getHigh()));
-        weatherInfoBuilder.setTodaysLow(Double.parseDouble(forecasts[0].getHigh()));
+        weatherInfoBuilder.setTodaysLow(Double.parseDouble(forecasts[0].getLow()));
 
         ArrayList<WeatherInfo.DayForecast> forecastList =
                 ConverterUtils.convertForecastsToDayForecasts(
