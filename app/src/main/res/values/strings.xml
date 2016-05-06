@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Yahoo Weather Provider</string>
+
+    <string name="about_preference_category_title">About</string>
+    <string name="about_preference">Copyright</string>
+    <string name="about_preference_summary">YAHOO! is a registered trademark of Yahoo! Inc. both in the United States and internationally.</string>
+
+    <string name="customization_preference_category_title">Customization</string>
 </resources>
