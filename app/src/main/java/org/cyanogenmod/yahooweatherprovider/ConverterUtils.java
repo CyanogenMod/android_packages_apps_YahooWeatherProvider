@@ -38,15 +38,21 @@ import static cyanogenmod.providers.WeatherContract.WeatherColumns.WeatherCode.S
 
 public class ConverterUtils {
 
-    public static ArrayList<WeatherInfo.DayForecast> convertForecastsToDayForecasts(List<Forecast> forecasts) {
+    public static ArrayList<WeatherInfo.DayForecast> convertForecastsToDayForecasts(
+            List<Forecast> forecasts, int max) {
         ArrayList<WeatherInfo.DayForecast> ret = new ArrayList<>();
+        int i = 0;
         for (Forecast forecast : forecasts) {
+            if (i > max) {
+                break;
+            }
             WeatherInfo.DayForecast dayForecast = new WeatherInfo.DayForecast.Builder(offset(
                     Integer.parseInt(forecast.getCode())))
                     .setHigh(Double.parseDouble(forecast.getHigh()))
                     .setLow(Double.parseDouble(forecast.getLow()))
                     .build();
             ret.add(dayForecast);
+            i++;
         }
         return ret;
     }

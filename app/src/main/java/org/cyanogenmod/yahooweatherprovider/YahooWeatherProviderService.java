@@ -64,6 +64,9 @@ public class YahooWeatherProviderService extends WeatherProviderService
     private static final int SERVICE_REQUEST_CANCELLED = -1;
     private static final int SERVICE_REQUEST_SUBMITTED = 0;
 
+    //TODO, add a setting for this
+    private static final int MAX_FORECAST_DAYS = 5;
+
     @Inject
     public YahooWeatherServiceManager mYahooWeatherServiceManager;
 
@@ -265,7 +268,7 @@ public class YahooWeatherProviderService extends WeatherProviderService
 
         ArrayList<WeatherInfo.DayForecast> forecastList =
                 ConverterUtils.convertForecastsToDayForecasts(
-                Arrays.asList(forecasts));
+                Arrays.asList(forecasts), MAX_FORECAST_DAYS);
         // Remove today
         forecastList.remove(0);
 
