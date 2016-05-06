@@ -21,7 +21,13 @@ public class Place {
 
     private Country country;
 
-    private Admin3 admin1;
+    private Admin1 admin1;
+    private Admin2 admin2;
+    private Admin3 admin3;
+
+    private Postal postal;
+
+    private Locality1 locality1;
 
     public String getWoeid() {
         return woeid;
@@ -39,12 +45,40 @@ public class Place {
         this.country = country;
     }
 
-    public Admin3 getAdmin () {
+    public Admin1 getAdmin1() {
         return admin1;
     }
 
-    public void setAdmin (Admin3 admin1) {
+    public void setAdmin1(Admin1 admin1) {
         this.admin1 = admin1;
+    }
+
+    public Admin2 getAdmin2() {
+        return admin2;
+    }
+
+    public void setAdmin2(Admin2 admin2) {
+        this.admin2 = admin2;
+    }
+
+    public Admin3 getAdmin3() {
+        return admin3;
+    }
+
+    public void setAdmin3(Admin3 admin3) {
+        this.admin3 = admin3;
+    }
+
+    public Postal getPostal() {
+        return postal;
+    }
+
+    public void setPostal(Postal postal) {
+        this.postal = postal;
+    }
+
+    public Locality1 getLocality1() {
+        return locality1;
     }
 
     @Override

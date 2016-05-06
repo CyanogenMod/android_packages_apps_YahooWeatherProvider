@@ -16,9 +16,13 @@
 
 package org.cyanogenmod.yahooweatherprovider;
 
+import org.cyanogenmod.yahooweatherprovider.yahoo.response.Admin1;
+import org.cyanogenmod.yahooweatherprovider.yahoo.response.Admin2;
 import org.cyanogenmod.yahooweatherprovider.yahoo.response.Admin3;
 import org.cyanogenmod.yahooweatherprovider.yahoo.response.Forecast;
+import org.cyanogenmod.yahooweatherprovider.yahoo.response.Locality1;
 import org.cyanogenmod.yahooweatherprovider.yahoo.response.Place;
+import org.cyanogenmod.yahooweatherprovider.yahoo.response.Postal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,10 +48,49 @@ public class ConverterUtils {
     public static List<WeatherLocation> convertPlacesToWeatherLocations(List<Place> places) {
         List<WeatherLocation> ret = new ArrayList<>();
         for (Place place : places) {
-            Admin3 admin3 = place.getAdmin();
+            Postal postal = place.getPostal();
+            Admin1 admin1 = place.getAdmin1();
+            if (admin1 != null && admin1.getContent() != null) {
+                WeatherLocation weatherLocation = new WeatherLocation.Builder(admin1.getWoeid(),
+                        admin1.getContent())
+                        .setCountry(place.getCountry().getContent())
+                        .setCountryId(place.getCountry().getCode())
+                        .setPostalCode(postal == null ? "" : postal.getContent())
+                        .build();
+                ret.add(weatherLocation);
+            }
+
+            Admin2 admin2 = place.getAdmin2();
+            if (admin2 != null && admin2.getContent() != null) {
+                WeatherLocation weatherLocation = new WeatherLocation.Builder(admin2.getWoeid(),
+                        admin2.getContent())
+                        .setCountry(place.getCountry().getContent())
+                        .setCountryId(place.getCountry().getCode())
+                        .setPostalCode(postal == null ? "" : postal.getContent())
+                        .build();
+                ret.add(weatherLocation);
+            }
+
+            Admin3 admin3 = place.getAdmin3();
             if (admin3 != null && admin3.getContent() != null) {
-                WeatherLocation weatherLocation = new WeatherLocation.Builder(place.getWoeid(),
-                        admin3.getContent()).build();
+                WeatherLocation weatherLocation = new WeatherLocation.Builder(admin3.getWoeid(),
+                        admin3.getContent())
+                        .setCountry(place.getCountry().getContent())
+                        .setCountryId(place.getCountry().getCode())
+                        .setPostalCode(postal == null ? "" : postal.getContent())
+                        .build();
+                ret.add(weatherLocation);
+            }
+
+            Locality1 locality1 = place.getLocality1();
+            if (locality1 != null && locality1.getContent() != null) {
+                WeatherLocation weatherLocation = new WeatherLocation.Builder(
+                        locality1.getWoeid(),
+                        locality1.getContent())
+                        .setCountry(place.getCountry().getContent())
+                        .setCountryId(place.getCountry().getCode())
+                        .setPostalCode(postal == null ? "" : postal.getContent())
+                        .build();
                 ret.add(weatherLocation);
             }
         }
