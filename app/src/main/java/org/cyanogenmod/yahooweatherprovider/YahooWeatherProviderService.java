@@ -269,8 +269,6 @@ public class YahooWeatherProviderService extends WeatherProviderService
         ArrayList<WeatherInfo.DayForecast> forecastList =
                 ConverterUtils.convertForecastsToDayForecasts(
                 Arrays.asList(forecasts), MAX_FORECAST_DAYS);
-        // Remove today
-        forecastList.remove(0);
 
         weatherInfoBuilder.setForecast(forecastList);
 
