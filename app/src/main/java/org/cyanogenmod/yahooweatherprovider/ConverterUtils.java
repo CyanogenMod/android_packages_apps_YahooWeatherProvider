@@ -27,16 +27,63 @@ import org.cyanogenmod.yahooweatherprovider.yahoo.response.Postal;
 import java.util.ArrayList;
 import java.util.List;
 
-import cyanogenmod.providers.WeatherContract;
 import cyanogenmod.weather.WeatherInfo;
 import cyanogenmod.weather.WeatherLocation;
-
-import static cyanogenmod.providers.WeatherContract.WeatherColumns.WeatherCode.ISOLATED_THUNDERSHOWERS;
-import static cyanogenmod.providers.WeatherContract.WeatherColumns.WeatherCode.NOT_AVAILABLE;
-import static cyanogenmod.providers.WeatherContract.WeatherColumns.WeatherCode.SCATTERED_SNOW_SHOWERS;
-import static cyanogenmod.providers.WeatherContract.WeatherColumns.WeatherCode.SCATTERED_THUNDERSTORMS;
+import cyanogenmod.providers.WeatherContract.WeatherColumns.WeatherCode;
 
 public class ConverterUtils {
+
+    // see https://developer.yahoo.com/weather/documentation.html#codes
+    private static final int CONDITION_CODE_TABLE[] = {
+            WeatherCode.TORNADO,                    //0  tornado
+            WeatherCode.TROPICAL_STORM,             //1  tropical storm
+            WeatherCode.HURRICANE,                  //2  hurricane
+            WeatherCode.SEVERE_THUNDERSTORMS,       //3  severe thunderstorms
+            WeatherCode.THUNDERSTORMS,              //4  thunderstorms
+            WeatherCode.MIXED_RAIN_AND_SNOW,        //5  mixed rain and snow
+            WeatherCode.MIXED_RAIN_AND_SLEET,       //6  mixed rain and sleet
+            WeatherCode.MIXED_SNOW_AND_SLEET,       //7  mixed snow and sleet
+            WeatherCode.FREEZING_DRIZZLE,           //8  freezing drizzle
+            WeatherCode.DRIZZLE,                    //9  drizzle
+            WeatherCode.FREEZING_RAIN,              //10 freezing rain
+            WeatherCode.SHOWERS,                    //11 showers
+            WeatherCode.SHOWERS,                    //12 showers
+            WeatherCode.SNOW_FLURRIES,              //13 snow flurries
+            WeatherCode.LIGHT_SNOW_SHOWERS,         //14 light snow showers
+            WeatherCode.BLOWING_SNOW,               //15 blowing snow
+            WeatherCode.SNOW,                       //16 snow
+            WeatherCode.HAIL,                       //17 hail
+            WeatherCode.SLEET,                      //18 sleet
+            WeatherCode.DUST,                       //19 dust
+            WeatherCode.FOGGY,                      //20 foggy
+            WeatherCode.HAZE,                       //21 haze
+            WeatherCode.SMOKY,                      //22 smoky
+            WeatherCode.BLUSTERY,                   //23 blustery
+            WeatherCode.WINDY,                      //24 windy
+            WeatherCode.COLD,                       //25 cold
+            WeatherCode.CLOUDY,                     //26 cloudy
+            WeatherCode.MOSTLY_CLOUDY_NIGHT,        //27 mostly cloudy (night)
+            WeatherCode.MOSTLY_CLOUDY_DAY,          //28 mostly cloudy (day)
+            WeatherCode.PARTLY_CLOUDY_NIGHT,        //29 partly cloudy (night)
+            WeatherCode.PARTLY_CLOUDY_DAY,          //30 partly cloudy (day)
+            WeatherCode.CLEAR_NIGHT,                //31 clear (night)
+            WeatherCode.SUNNY,                      //32 sunny
+            WeatherCode.FAIR_NIGHT,                 //33 fair (night)
+            WeatherCode.FAIR_DAY,                   //34 fair (day)
+            WeatherCode.MIXED_RAIN_AND_HAIL,        //35 mixed rain and hail
+            WeatherCode.HOT,                        //36 hot
+            WeatherCode.ISOLATED_THUNDERSTORMS,     //37 isolated thunderstorms
+            WeatherCode.SCATTERED_THUNDERSTORMS,    //38 scattered thunderstorms
+            WeatherCode.SCATTERED_THUNDERSTORMS,    //39 scattered thunderstorms
+            WeatherCode.SCATTERED_SHOWERS,          //40 scattered showers
+            WeatherCode.HEAVY_SNOW,                 //41 heavy snow
+            WeatherCode.SCATTERED_SNOW_SHOWERS,     //42 scattered snow showers
+            WeatherCode.HEAVY_SNOW,                 //43 heavy snow
+            WeatherCode.PARTLY_CLOUDY,              //44 partly cloudy
+            WeatherCode.THUNDERSHOWER,              //45 thundershowers
+            WeatherCode.SNOW_SHOWERS,               //46 snow showers
+            WeatherCode.ISOLATED_THUNDERSHOWERS,    //47 isolated thundershowers
+    };
 
     public static ArrayList<WeatherInfo.DayForecast> convertForecastsToDayForecasts(
             List<Forecast> forecasts, int max) {
@@ -46,7 +93,7 @@ public class ConverterUtils {
             if (i > max) {
                 break;
             }
-            WeatherInfo.DayForecast dayForecast = new WeatherInfo.DayForecast.Builder(offset(
+            WeatherInfo.DayForecast dayForecast = new WeatherInfo.DayForecast.Builder(convertConditionCodeToWeatherCondition(
                     Integer.parseInt(forecast.getCode())))
                     .setHigh(Double.parseDouble(forecast.getHigh()))
                     .setLow(Double.parseDouble(forecast.getLow()))
@@ -109,17 +156,11 @@ public class ConverterUtils {
         return ret;
     }
 
-    public static int offset(int conditionCode) {
-        if (conditionCode <= WeatherContract.WeatherColumns.WeatherCode.SHOWERS) {
-            return conditionCode;
-        } else if (conditionCode <= SCATTERED_THUNDERSTORMS) {
-            return conditionCode - 1;
-        } else if (conditionCode <= SCATTERED_SNOW_SHOWERS) {
-            return conditionCode - 2;
-        } else if (conditionCode <= ISOLATED_THUNDERSHOWERS) {
-            return conditionCode - 3;
+    public static int convertConditionCodeToWeatherCondition(int conditionCode) {
+        if ((0 <= conditionCode) && (conditionCode < CONDITION_CODE_TABLE.length)) {
+            return CONDITION_CODE_TABLE[conditionCode];
         } else {
-            return NOT_AVAILABLE;
+            return WeatherCode.NOT_AVAILABLE;
         }
     }
 }

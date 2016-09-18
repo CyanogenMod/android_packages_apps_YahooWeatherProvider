@@ -252,7 +252,7 @@ public class YahooWeatherProviderService extends WeatherProviderService
 
         // Set current weather condition code
         weatherInfoBuilder.setWeatherCondition(
-                ConverterUtils.offset(Integer.parseInt(condition.getCode())));
+                ConverterUtils.convertConditionCodeToWeatherCondition(Integer.parseInt(condition.getCode())));
 
         // Set humidity
         weatherInfoBuilder.setHumidity(Double.parseDouble(atmosphere.getHumidity()));
